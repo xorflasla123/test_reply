@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.reply.root.mybatis.reply.ReplyMapper">
+	<resultMap type="com.reply.root.reply.dto.ReplyDTO" id="reply">
+		<result property="content" column="comment_content"/>
+		<result property="id" column="comment_id"/>
+		<result property="layer" column="comment_layer"/>
+		<result property="date" column="comment_date"/>
+	</resultMap>
+	
+	<insert id="addReply">
+		insert into board_comment_test1(comment_content, comment_id, comment_layer) values(#{content}, reply_seq.nextval, #{layer})
+	</insert>
+	
+	<select id="getRepList" resultMap="reply">
+		select * from board_comment_test1 order by comment_date desc
+	</select>
+</mapper>
