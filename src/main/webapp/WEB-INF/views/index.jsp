@@ -31,23 +31,33 @@
 			url : "replyData"/* +${personalData.writeNo} */, type : "GET",
 			dataType : "json",
 			success : function(rep){
-				let html = ""
+				let html = `<tr> //멋져!
+								<td>내용</td> <td>시간</td>
+							</tr>`
+							
 				rep.forEach(function(data){
 					let date = new Date(data.date)
 					let writeDate = date.getFullYear()+"년"+(date.getMonth()+1)+"월"
 					writeDate += date.getDate()+"일"+date.getHours()+"시"
 					writeDate += date.getMinutes()+"분"+date.getSeconds()+"초"
 					
-					html += "<div align='left'>" /* "<b>아이디 : </b>"+data.id+"님 / " */
-					html += "<b>작성일</b> : "+writeDate+"<br>"
-					/* html += "<b>제목</b> : "+data.title+"<br>" */
-					html += "<b>내용</b> : "+data.content+"<hr></div>"
+					//html += "<div align='left'>" /* "<b>아이디 : </b>"+data.id+"님 / " */
+					//html += "<b>작성일</b> : "+writeDate+"<br>"
+					//html += "<b>내용</b> : "+data.content+"<hr></div>"
+					
+					html +=	"<tr>"
+					html += "<td>"+data.content+"</td>"
+					html +=	"<td>"+writeDate+"</td>"
+					html += "</tr>"
 				})
-				$("#reply").html(html)
+				$("#show").html(html)
 			}, error : function(){
 				alert('데이터를 가져올 수 없습니다')
 			}
 		})
+	}
+	window.onload = function (){
+		replyData();
 	}
 </script>
 </head>
@@ -58,6 +68,6 @@
 			<button type="button" onclick="rep()">댓글 달기</button>
 		</form>
 	</div>
-	<div id="reply" style="margin: 0 auto; width: 250px; padding-top: 20px;"></div>
+	<table border="1" id="show" style="margin: auto;"></table>
 </body>
 </html>
