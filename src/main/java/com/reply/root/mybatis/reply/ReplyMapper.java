@@ -7,4 +7,5 @@ import com.reply.root.reply.dto.ReplyDTO;
 public interface ReplyMapper {
 	public void addReply(ReplyDTO dto);
 	public List<ReplyDTO> getRepList();
+	public void removeReply(Object map);
 }

@@ -20,8 +20,16 @@ public class ReplyController {
 		rs.addReply(map);
 	}
 	
+	@PostMapping(value = "removeReply", produces = "application/json; charset=utf-8")
+	public void removeReply(@RequestBody Map<String, Object> map) {
+		//System.out.println(map);
+		rs.removeReply(map);
+	}
+	
 	@GetMapping(value = "replyData", produces = "application/json; charset=utf-8")
 	public List<ReplyDTO> replyData(){
 		return rs.getRepList();
 	}
+	
+	
 }

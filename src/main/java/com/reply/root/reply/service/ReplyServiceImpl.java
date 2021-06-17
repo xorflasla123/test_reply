@@ -6,6 +6,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.reply.root.mybatis.reply.ReplyMapper;
 import com.reply.root.reply.dto.ReplyDTO;
 
@@ -26,5 +28,22 @@ public class ReplyServiceImpl implements ReplyService{
 	@Override
 	public List<ReplyDTO> getRepList() {
 		return mapper.getRepList();
+	}
+
+	@Override
+	public void removeReply(Object map) {
+//		ObjectMapper mapp = new ObjectMapper();
+//		
+//		mapp.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+//		//파라미터Map에서 DTO에 들어있지 않는 변수가 있어도 무시함.
+//		
+//		ReplyDTO dto = mapp.convertValue(map.get("ReplyDTO"), ReplyDTO.class);
+		mapper.removeReply(map);
+	}
+
+	@Override
+	public Map<String, Object> insertData(Map<String, Object> params) throws Exception {
+		
+		return null;
 	}
 }

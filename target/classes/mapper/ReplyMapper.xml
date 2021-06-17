@@ -18,4 +18,8 @@
 	<select id="getRepList" resultMap="reply">
 		select * from board_comment_test1 order by comment_date desc
 	</select>
+	
+	<delete id="removeReply">
+		delete from board_comment_test1 where comment_id = #{id} and comment_content = #{content}
+	</delete>
 </mapper>
