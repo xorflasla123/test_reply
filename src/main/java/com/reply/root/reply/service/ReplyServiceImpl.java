@@ -6,8 +6,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.reply.root.mybatis.reply.ReplyMapper;
 import com.reply.root.reply.dto.ReplyDTO;
 
@@ -18,11 +16,16 @@ public class ReplyServiceImpl implements ReplyService{
 	@Override
 	public void addReply(Map<String, Object> map) {
 		ReplyDTO dto = new ReplyDTO();
-		int num = 0;
-		
-		dto.setContent((String)map.get("content"));
-		dto.setLayer(num);
-		mapper.addReply(dto);
+		if(map.get("group_id")==null) {
+			dto.setContent((String)map.get("content"));
+			dto.setLayer(0);
+			mapper.addReply(dto);
+		}else {
+			dto.setContent((String)map.get("content"));
+			dto.setLayer(1);
+			dto.setId(Integer.parseInt((String)(map.get("group_id"))));
+			mapper.addReply2(dto);
+		}
 	}
 
 	@Override
@@ -31,19 +34,12 @@ public class ReplyServiceImpl implements ReplyService{
 	}
 
 	@Override
-	public void removeReply(Object map) {
-//		ObjectMapper mapp = new ObjectMapper();
-//		
-//		mapp.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-//		//파라미터Map에서 DTO에 들어있지 않는 변수가 있어도 무시함.
-//		
-//		ReplyDTO dto = mapp.convertValue(map.get("ReplyDTO"), ReplyDTO.class);
-		mapper.removeReply(map);
-	}
-
-	@Override
-	public Map<String, Object> insertData(Map<String, Object> params) throws Exception {
-		
-		return null;
+	public void removeReply(Map<String, Object> map) {
+		System.out.println(map.get("layer"));
+		if((int)map.get("layer") == 1) {
+			mapper.removeReply(map);
+		} else if((int)map.get("layer") == 0){
+			mapper.removeAllRep(map);
+		}
 	}
 }
