@@ -35,7 +35,7 @@ public class ReplyServiceImpl implements ReplyService{
 
 	@Override
 	public void removeReply(Map<String, Object> map) {
-		System.out.println(map.get("layer"));
+		//System.out.println(map.get("layer"));
 		if((int)map.get("layer") == 1) {
 			mapper.removeReply(map);
 		} else if((int)map.get("layer") == 0){

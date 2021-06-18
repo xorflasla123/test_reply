@@ -58,14 +58,14 @@
 			data: JSON.stringify(data[i]),
 			contentType: "application/json; charset=utf-8",
 			success: function(){
-				alert("성공적으로 삭제되었습니다.");
+				alert("댓글이 삭제되었습니다.");
 				replyData();
 			}, error: function(){
 				alert("문제 발생!!!");
 			}
 		})
 	}
-	
+	//수정...?
 	function replyData(){
 		$.ajax({
 			url : "replyData", type : "GET",
