@@ -19,9 +19,20 @@ public class ReplyController {
 	public void addReply(@RequestBody Map<String, Object> map) {
 		rs.addReply(map);
 	}
+	@PostMapping(value = "addReply2", produces = "application/json; charset=utf-8")
+	public void addReply2(@RequestBody Map<String, Object> map) {
+		rs.addReply(map);
+	}
+	
+	@PostMapping(value = "removeReply", produces = "application/json; charset=utf-8")
+	public void removeReply(@RequestBody Map<String, Object> map) {
+		rs.removeReply(map);
+	}
 	
 	@GetMapping(value = "replyData", produces = "application/json; charset=utf-8")
 	public List<ReplyDTO> replyData(){
 		return rs.getRepList();
 	}
+	
+	
 }

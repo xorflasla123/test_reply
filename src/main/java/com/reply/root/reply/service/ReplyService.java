@@ -8,4 +8,5 @@ import com.reply.root.reply.dto.ReplyDTO;
 public interface ReplyService {
 	public void addReply(Map<String, Object> map);
 	public List<ReplyDTO> getRepList();
+	public void removeReply(Map<String, Object> map);
 }

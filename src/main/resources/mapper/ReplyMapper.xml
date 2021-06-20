@@ -14,8 +14,19 @@
 	<insert id="addReply">
 		insert into board_comment_test1(comment_content, comment_id, comment_layer) values(#{content}, reply_seq.nextval, #{layer})
 	</insert>
+	<insert id="addReply2">
+		insert into board_comment_test1(comment_content, comment_id, comment_layer) values(#{content}, #{id}, #{layer})
+	</insert>
 	
 	<select id="getRepList" resultMap="reply">
-		select * from board_comment_test1 order by comment_date desc
+		select * from board_comment_test1 order by comment_id, comment_date ASC
 	</select>
+	
+	<delete id="removeReply">
+		delete from board_comment_test1 where comment_id = #{id} and comment_content = #{content}
+	</delete>
+	
+	<delete id="removeAllRep">
+		delete from board_comment_test1 where comment_id = #{id}
+	</delete>
 </mapper>
