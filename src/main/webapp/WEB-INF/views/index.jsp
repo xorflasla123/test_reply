@@ -12,6 +12,7 @@
 	//대댓글 적는 방식 네이버 블로그처럼 수정 예정, 댓글 수정 기능 추가 예정
 
 	let data; //삭제를 돕기 위해 데이터 저장
+	let re_id;
 	
 	//댓글 test용이기 때문에 table에 게시판id, userId가 없음.
 	function rep(){ //댓글 저장
@@ -75,12 +76,12 @@
 			success : function(rep){
 				let html = '';
 				data = rep;
-				/* console.log('reply list : ');
-				console.log(data); */
-				if(rep.length===0){
+				console.log('reply list : ');
+				console.log(data);
+				if(rep.length==0){
 					html += "<h3>댓글이 없습니다.</h3>"
 				} else{
-					html += `<tr> //`멋져!
+					html += `<tr> //멋져!
 								<td>내용</td> <td>작성일자</td> <td></td>
 							</tr>`
 					for(i=0;i<rep.length;i++){
@@ -121,7 +122,7 @@
 		$("#first").slideDown("slow");
 		$("#modal_wrap").show();
 		//console.log(num);
-		let re_id = num.trim() * 1; //빈칸 제거 후 숫자 형변환(만약을 대비)
+		re_id = num.trim() * 1; //빈칸 제거 후 숫자 형변환(만약을 대비)
 		//console.log(re_id);
 		document.reform.group_id.value = re_id;
 	}
@@ -157,7 +158,7 @@
 			<button type="button" onclick="rep()">댓글 달기</button>
 		</form>
 	</div>
-	<table border="1" id="show" style="margin: auto;"></table>
+
 	
 	<div id="modal_wrap">
 		<div id="first">
@@ -171,5 +172,7 @@
 			</div>
 		</div>
 	</div>
+	
+	<table border="1" id="show" style="margin: auto;"></table>
 </body>
 </html>
