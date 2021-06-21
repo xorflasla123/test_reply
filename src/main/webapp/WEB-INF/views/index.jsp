@@ -100,7 +100,7 @@
 							html +=	"</td>"
 							html += "</tr>"
 							
- 							html += "<tr id='hidden"+i+"' style='display:none;'>"
+ 							html += "<tr id='hidden"+i+"' style='display:none;'>" //대댓글 적는 form 기본 옵션 display:none
 							html += "<td colspan='3'>"
 							html += 	"<form id='re"+i+"' name='reform'>"
 							html += 		"<input type='hidden' name='group_id' value='"+rep[i].id+"'>"
