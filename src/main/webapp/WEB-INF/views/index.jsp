@@ -148,6 +148,7 @@
 	}
 </style>
 </head>
+
 <body>
 	<div style="margin: 0 auto; width: 250px; padding-top: 20px;">
 		<form id="frm">
@@ -155,15 +156,6 @@
 			<button type="button" onclick="rep()">댓글 달기</button>
 		</form>
 	</div>
-	
-<!-- 	<div id="hidden" style="margin: auto; width: 250px; padding-top: 10px; padding-bottom: 10px;">
-		<form id="re" name="reform">
-			<input type="hidden" name="group_id" value=""> 여기 value가 문제인데...
-			<textarea rows="5" cols="30" id="content" name="content"></textarea>
-			<button type="button" onclick="rerep()">대댓글 달기</button>
-			<button type="button" onclick="invisible()">취소</button>
-		</form>
-	</div> -->
 	
 	<table border="1" id="show" style="margin: auto;"></table> <!-- 댓글 보여주는 부분 -->
 </body>
