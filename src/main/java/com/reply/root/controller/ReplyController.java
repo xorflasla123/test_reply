@@ -15,6 +15,7 @@ import com.reply.root.reply.service.ReplyService;
 @RestController
 public class ReplyController {
 	@Autowired ReplyService rs;
+	
 	@PostMapping(value = "addReply", produces = "application/json; charset=utf-8")
 	public void addReply(@RequestBody Map<String, Object> map) {
 		rs.addReply(map);

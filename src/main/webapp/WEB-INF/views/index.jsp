@@ -34,8 +34,8 @@
 		})
 	}
 	
-	function rerep(){ //대댓글 저장
-		let form={}; let arr=$("#re").serializeArray();
+	function rerep(i){ //대댓글 저장
+		let form={}; let arr=$("#re"+i).serializeArray();
 		for(i=0; i<arr.length; i++){
 			form[arr[i].name] = arr[i].value
 		}
@@ -47,7 +47,7 @@
 			success: function(list){
 				alert("성공적으로 대댓글이 달렸습니다");
 				$('textarea').val('');
-				slide_hide(); //modal로 해놓은 거 숨기기
+				invisible();
 				replyData();
 			}, error: function(){
 				alert("문제 발생!!!");
@@ -96,9 +96,19 @@
 							html +=	"<td>"+writeDate+"</td>"
 							html += "<td>"
 							html +=	"<input type='button' id='"+i+"' value='삭제' onclick='remove(this.id)'>"
-							html +=	"<input type='button' id='"+rep[i].id+"' value='댓글' onclick='slideClick(this.id)'>"
+							html +=	"<input type='button' id='"+rep[i].id+"' value='댓글' onclick='visible("+i+")'>"
 							html +=	"</td>"
 							html += "</tr>"
+							
+ 							html += "<tr id='hidden"+i+"' style='display:none;'>"
+							html += "<td colspan='3'>"
+							html += 	"<form id='re"+i+"' name='reform'>"
+							html += 		"<input type='hidden' name='group_id' value='"+rep[i].id+"'>"
+							html += 		"<textarea rows='5' cols='30' id='content' name='content'></textarea>"
+							html += 		"<button type='button' onclick='rerep("+i+")'>대댓글 달기</button>"
+							html += 		"<button type='button' onclick='invisible("+i+")'>취소</button>"
+							html += 	"</form>"
+							html += "</td></tr>"
 						}
 						if(rep[i].layer==1){
 							html +=	"<tr>"
@@ -117,19 +127,13 @@
 			}
 		})
 	}
-
-	function slideClick(num){
-		$("#first").slideDown("slow");
-		$("#modal_wrap").show();
-		//console.log(num);
-		re_id = num.trim() * 1; //빈칸 제거 후 숫자 형변환(만약을 대비)
-		//console.log(re_id);
-		document.reform.group_id.value = re_id;
+	
+	function visible(i){
+		$("#hidden"+i).show();
 	}
 	
-	function slide_hide(){
-		$("#first").slideUp("fast");
-		$("#modal_wrap").hide();
+	function invisible(i){
+		$("#hidden"+i).hide();
 	}
 	
 	window.onload = function (){ //브라우저 시작과 동시에 댓글 보여주기
@@ -138,16 +142,9 @@
 </script>
 
 <style type="text/css">
-	#modal_wrap{
-		display: none; position: fixed; z-index: 9;
-		margin: 0 auto; top: 0; left: 0; right: 0;
-		width: 100%; height: 100%;
-		background-color: rgba(0,0,0,0.6);
-	}
-	#first{
-		display: none; position: fixed; z-index: 10; margin: 0 auto;
-		top: 30px; left: 0; right: 0; height: 450px; width: 300px;
-		background-color: rgba(212,224,250,0.9);
+	#hidden{
+		display: none;
+		align-content: center;
 	}
 </style>
 </head>
@@ -158,21 +155,16 @@
 			<button type="button" onclick="rep()">댓글 달기</button>
 		</form>
 	</div>
-
 	
-	<div id="modal_wrap">
-		<div id="first">
-			<div style="width: 250px; margin: 0 auto; padding-top: 20px;">
-				<form id="re" name="reform">
-					<input type="hidden" name="group_id" value="">
-					<textarea rows="5" cols="30" id="content" name="content"></textarea>
-					<button type="button" onclick="rerep()">대댓글 달기</button>
-					<button type="button" onclick="slide_hide()">취소</button>
-				</form>
-			</div>
-		</div>
-	</div>
+<!-- 	<div id="hidden" style="margin: auto; width: 250px; padding-top: 10px; padding-bottom: 10px;">
+		<form id="re" name="reform">
+			<input type="hidden" name="group_id" value=""> 여기 value가 문제인데...
+			<textarea rows="5" cols="30" id="content" name="content"></textarea>
+			<button type="button" onclick="rerep()">대댓글 달기</button>
+			<button type="button" onclick="invisible()">취소</button>
+		</form>
+	</div> -->
 	
-	<table border="1" id="show" style="margin: auto;"></table>
+	<table border="1" id="show" style="margin: auto;"></table> <!-- 댓글 보여주는 부분 -->
 </body>
 </html>

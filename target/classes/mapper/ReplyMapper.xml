@@ -25,7 +25,6 @@
 	<delete id="removeReply">
 		delete from board_comment_test1 where comment_id = #{id} and comment_content = #{content}
 	</delete>
-	
 	<delete id="removeAllRep">
 		delete from board_comment_test1 where comment_id = #{id}
 	</delete>
