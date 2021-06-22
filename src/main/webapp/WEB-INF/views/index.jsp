@@ -85,34 +85,21 @@
 								<td>내용</td> <td>작성일자</td> <td></td>
 							</tr>` */
 					for(i=0;i<rep.length;i++){
-						let date = new Date(rep[i].date)
-						let writeDate = date.getFullYear()+"/"+(date.getMonth()+1)+"/"
-						writeDate += date.getDate()+"_"+date.getHours()+":"
-						writeDate += date.getMinutes()+":"+date.getSeconds()
+						let date = new Date(rep[i].date);
+						let hours = date.getHours();
+						let minutes = date.getMinutes();
+						let seconds = date.getSeconds();
+						hours = hours > 9 ? hours : "0" + hours;
+						minutes = minutes > 9 ? minutes : "0" + minutes;
+						seconds = seconds > 9 ? seconds : "0" + seconds;
+						let writeDate = date.getFullYear()+"."+(date.getMonth()+1)+"."
+						writeDate += date.getDate()+" "+hours+":"
+						writeDate += minutes+":"+seconds
 					
 						if(rep[i].layer==0){ //부모 댓글은 [댓글]버튼 추가
-/* 							html +=	"<tr>"
-							html += "<td>"+rep[i].content+"</td>"
-							html +=	"<td>"+writeDate+"</td>"
-							html += "<td>"
-							html +=	"<input type='button' id='"+i+"' value='삭제' onclick='remove(this.id)'>"
-							html +=	"<input type='button' id='"+rep[i].id+"' value='댓글' onclick='visible("+i+")'>"
-							html +=	"</td>"
-							html += "</tr>"
-							
- 							html += "<tr id='hidden"+i+"' style='display:none;'>" //대댓글 적는 form 기본 옵션 display:none
-							html += "<td colspan='3'>"
-							html += 	"<form id='re"+i+"' name='reform'>"
-							html += 		"<input type='hidden' name='group_id' value='"+rep[i].id+"'>"
-							html += 		"<textarea rows='5' cols='30' id='content' name='content'></textarea>"
-							html += 		"<button type='button' onclick='rerep("+i+")'>대댓글 달기</button>"
-							html += 		"<button type='button' onclick='invisible("+i+")'>취소</button>"
-							html += 	"</form>"
-							html += "</td></tr>" */
-							
 							html += "<div style='width: 580px; padding: 10px 10px 0px 10px; word-break: break-all;'>"
 							html +=		rep[i].content+"<br>"
-							html +=		writeDate+"<br>"
+							html +=		"<font class= 'time'>"+writeDate+"</font><br>"
 							html +=		"<input type='button' id='"+i+"' value='삭제' onclick='remove(this.id)'>"
 							html +=		"<input type='button' id='"+rep[i].id+"' value='댓글' onclick='visible("+i+")'>"
 							html +=		"<hr>"
@@ -127,20 +114,11 @@
 							html +=		"</form>"
 							html += 	"<hr>"
 							html += "</div>"
-
 						}
 						if(rep[i].layer==1){
-/* 							html +=	"<tr>"
-							html += "<td>└>"+rep[i].content+"</td>"
-							html +=	"<td>"+writeDate+"</td>"
-							html += "<td>"
-							html +=	"<input type='button' id='"+i+"' value='삭제' onclick='remove(this.id)'>"
-							html +=	"</td>"
-							html += "</tr>" */
-							
 							html += "<div style='width: 580px; padding: 10px 10px 0px 10px; word-break: break-all;'>"
 							html +=		"└>"+rep[i].content+"<br>"
-							html +=		writeDate+"<br>"
+							html +=		"<font class= 'time'>"+writeDate+"</font><br>"
 							html +=		"<input type='button' id='"+i+"' value='삭제' onclick='remove(this.id)'>"
 							html +=		"<hr>"
 							html += "</div>"
@@ -172,6 +150,9 @@
 		display: none;
 		align-content: center;
 	}
+	.time{
+		font-size: 13px;
+	}
 </style>
 </head>
 
@@ -186,7 +167,6 @@
 	<div id="show1" style="margin: auto; width: 600px; background-color: #eee;"></div>
 	
 	<table border="1" id="show" style="margin: auto;"></table> <!-- 댓글 보여주는 부분 -->
-
 </body>
 </html>
 
