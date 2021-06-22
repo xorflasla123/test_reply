@@ -20,6 +20,7 @@
 		for(i=0; i<arr.length; i++){
 			form[arr[i].name] = arr[i].value
 		}
+		console.log(form); //null값 체크
 		$.ajax({
 			url: "addReply", type: "POST", //com.reply.root.controller.ReplyController.java에 있는 addReply
 			data: JSON.stringify(form),
@@ -29,7 +30,7 @@
 				$('textarea').val(''); //textarea 비우기
 				replyData(); //화면에 보여주는 function
 			}, error: function(){
-				alert("문제 발생!!!");
+				alert("내용을 적어주세요!!!");
 			}
 		})
 	}
@@ -50,7 +51,7 @@
 				invisible();
 				replyData();
 			}, error: function(){
-				alert("문제 발생!!!");
+				alert("내용을 적어주세요!!!");
 			}
 		})
 	}
@@ -97,7 +98,7 @@
 						writeDate += minutes+":"+seconds
 					
 						if(rep[i].layer==0){ //부모 댓글은 [댓글]버튼 추가
-							html += "<div style='width: 580px; padding: 10px 10px 0px 10px; word-break: break-all;'>"
+							html += "<div class= 'reply'>"
 							html +=		rep[i].content+"<br>"
 							html +=		"<font class= 'time'>"+writeDate+"</font><br>"
 							html +=		"<input type='button' id='"+i+"' value='삭제' onclick='remove(this.id)'>"
@@ -105,10 +106,10 @@
 							html +=		"<hr>"
 							html += "</div>"
 							
-							html += "<div id='hidden"+i+"' style='display:none; style='width: 580px; overflow: visible; padding: 10px;''>"
+							html += "<div id='hidden"+i+"' class= 'reply' style='display:none'>"
 							html +=		"<form id='re"+i+"' name='reform'>"
 							html +=			"<input type='hidden' name='group_id' value='"+rep[i].id+"'>"
-							html +=			"<textarea rows='5' cols='30' id='content' name='content'></textarea>"
+							html +=			"<textarea class= 'writeBox' id='content' name='content'></textarea>"
 							html +=			"<button type='button' onclick='rerep("+i+")'>대댓글 달기</button>"
 							html +=			"<button type='button' onclick='invisible("+i+")'>취소</button>"
 							html +=		"</form>"
@@ -116,7 +117,7 @@
 							html += "</div>"
 						}
 						if(rep[i].layer==1){
-							html += "<div style='width: 580px; padding: 10px 10px 0px 10px; word-break: break-all;'>"
+							html += "<div class= 'reply' style= 'background-color: #D5D5D5'>"
 							html +=		"└>"+rep[i].content+"<br>"
 							html +=		"<font class= 'time'>"+writeDate+"</font><br>"
 							html +=		"<input type='button' id='"+i+"' value='삭제' onclick='remove(this.id)'>"
@@ -153,18 +154,37 @@
 	.time{
 		font-size: 13px;
 	}
+	.replyBG{
+		margin: auto;
+		width: 600px;
+		background-color: #EAEAEA;
+	}
+	.reply{
+		width: 580px;
+		padding: 10px 10px 0px 10px;
+		word-break: break-all;
+	}
+	.writeBox{
+		width: 570px;
+		height: 60px;
+		resize: none;
+	}
 </style>
 </head>
 
 <body>
-	<div style="margin: 0 auto; width: 250px; padding-top: 20px;">
-		<form id="frm">
-			<textarea rows="5" cols="30" id="content" name="content"></textarea>
-			<button type="button" onclick="rep()">댓글 달기</button>
-		</form>
+	<div style="margin: auto; width: 600px;">
+		<div style="padding: 10px 10px 10px 10px;">
+			<form id="frm">
+				<textarea class="writeBox" id="content" name="content"></textarea>
+				<div align="right">
+					<button type="button" onclick="rep()">댓글 달기</button>
+				</div>
+			</form>
+		</div>	
 	</div>
 	
-	<div id="show1" style="margin: auto; width: 600px; background-color: #eee;"></div>
+	<div id="show1" class="replyBG"></div>
 	
 	<table border="1" id="show" style="margin: auto;"></table> <!-- 댓글 보여주는 부분 -->
 </body>
