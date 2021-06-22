@@ -81,9 +81,9 @@
 				if(rep.length==0){
 					html += "<h3>댓글이 없습니다.</h3>"
 				} else{
-					html += `<tr> //멋져!
+					/* html += `<tr> //멋져!
 								<td>내용</td> <td>작성일자</td> <td></td>
-							</tr>`
+							</tr>` */
 					for(i=0;i<rep.length;i++){
 						let date = new Date(rep[i].date)
 						let writeDate = date.getFullYear()+"/"+(date.getMonth()+1)+"/"
@@ -91,7 +91,7 @@
 						writeDate += date.getMinutes()+":"+date.getSeconds()
 					
 						if(rep[i].layer==0){ //부모 댓글은 [댓글]버튼 추가
-							html +=	"<tr>"
+/* 							html +=	"<tr>"
 							html += "<td>"+rep[i].content+"</td>"
 							html +=	"<td>"+writeDate+"</td>"
 							html += "<td>"
@@ -108,20 +108,46 @@
 							html += 		"<button type='button' onclick='rerep("+i+")'>대댓글 달기</button>"
 							html += 		"<button type='button' onclick='invisible("+i+")'>취소</button>"
 							html += 	"</form>"
-							html += "</td></tr>"
+							html += "</td></tr>" */
+							
+							html += "<div style='width: 580px; padding: 10px 10px 0px 10px; word-break: break-all;'>"
+							html +=		rep[i].content+"<br>"
+							html +=		writeDate+"<br>"
+							html +=		"<input type='button' id='"+i+"' value='삭제' onclick='remove(this.id)'>"
+							html +=		"<input type='button' id='"+rep[i].id+"' value='댓글' onclick='visible("+i+")'>"
+							html +=		"<hr>"
+							html += "</div>"
+							
+							html += "<div id='hidden"+i+"' style='display:none; style='width: 580px; overflow: visible; padding: 10px;''>"
+							html +=		"<form id='re"+i+"' name='reform'>"
+							html +=			"<input type='hidden' name='group_id' value='"+rep[i].id+"'>"
+							html +=			"<textarea rows='5' cols='30' id='content' name='content'></textarea>"
+							html +=			"<button type='button' onclick='rerep("+i+")'>대댓글 달기</button>"
+							html +=			"<button type='button' onclick='invisible("+i+")'>취소</button>"
+							html +=		"</form>"
+							html += 	"<hr>"
+							html += "</div>"
+
 						}
 						if(rep[i].layer==1){
-							html +=	"<tr>"
+/* 							html +=	"<tr>"
 							html += "<td>└>"+rep[i].content+"</td>"
 							html +=	"<td>"+writeDate+"</td>"
 							html += "<td>"
 							html +=	"<input type='button' id='"+i+"' value='삭제' onclick='remove(this.id)'>"
 							html +=	"</td>"
-							html += "</tr>"
+							html += "</tr>" */
+							
+							html += "<div style='width: 580px; padding: 10px 10px 0px 10px; word-break: break-all;'>"
+							html +=		"└>"+rep[i].content+"<br>"
+							html +=		writeDate+"<br>"
+							html +=		"<input type='button' id='"+i+"' value='삭제' onclick='remove(this.id)'>"
+							html +=		"<hr>"
+							html += "</div>"
 						}
 					}
 				}
-				$("#show").html(html)
+				$("#show1").html(html)
 			}, error : function(){
 				alert('데이터를 가져올 수 없습니다')
 			}
@@ -157,6 +183,17 @@
 		</form>
 	</div>
 	
+	<div id="show1" style="margin: auto; width: 600px; background-color: #eee;"></div>
+	
 	<table border="1" id="show" style="margin: auto;"></table> <!-- 댓글 보여주는 부분 -->
+
 </body>
 </html>
+
+
+
+
+
+
+
+
