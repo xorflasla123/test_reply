@@ -19,13 +19,12 @@
 	</insert>
 	
 	<select id="getRepList" resultMap="reply">
-		select * from board_comment_test1 order by comment_id, comment_date ASC
+		select * from board_comment_test1 order by comment_id desc, comment_date asc
 	</select>
 	
 	<delete id="removeReply">
 		delete from board_comment_test1 where comment_id = #{id} and comment_content = #{content}
 	</delete>
-	
 	<delete id="removeAllRep">
 		delete from board_comment_test1 where comment_id = #{id}
 	</delete>

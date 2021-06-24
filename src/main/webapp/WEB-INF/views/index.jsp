@@ -20,6 +20,7 @@
 		for(i=0; i<arr.length; i++){
 			form[arr[i].name] = arr[i].value
 		}
+		console.log(form); //null값 체크
 		$.ajax({
 			url: "addReply", type: "POST", //com.reply.root.controller.ReplyController.java에 있는 addReply
 			data: JSON.stringify(form),
@@ -29,13 +30,13 @@
 				$('textarea').val(''); //textarea 비우기
 				replyData(); //화면에 보여주는 function
 			}, error: function(){
-				alert("문제 발생!!!");
+				alert("내용을 적어주세요!!!");
 			}
 		})
 	}
 	
-	function rerep(){ //대댓글 저장
-		let form={}; let arr=$("#re").serializeArray();
+	function rerep(i){ //대댓글 저장
+		let form={}; let arr=$("#re"+i).serializeArray();
 		for(i=0; i<arr.length; i++){
 			form[arr[i].name] = arr[i].value
 		}
@@ -47,10 +48,10 @@
 			success: function(list){
 				alert("성공적으로 대댓글이 달렸습니다");
 				$('textarea').val('');
-				slide_hide(); //modal로 해놓은 거 숨기기
+				invisible();
 				replyData();
 			}, error: function(){
-				alert("문제 발생!!!");
+				alert("내용을 적어주세요!!!");
 			}
 		})
 	}
@@ -81,55 +82,63 @@
 				if(rep.length==0){
 					html += "<h3>댓글이 없습니다.</h3>"
 				} else{
-					html += `<tr> //멋져!
+					/* html += `<tr> //멋져!
 								<td>내용</td> <td>작성일자</td> <td></td>
-							</tr>`
+							</tr>` */
 					for(i=0;i<rep.length;i++){
-						let date = new Date(rep[i].date)
-						let writeDate = date.getFullYear()+"/"+(date.getMonth()+1)+"/"
-						writeDate += date.getDate()+"_"+date.getHours()+":"
-						writeDate += date.getMinutes()+":"+date.getSeconds()
+						let date = new Date(rep[i].date);
+						let hours = date.getHours();
+						let minutes = date.getMinutes();
+						let seconds = date.getSeconds();
+						hours = hours > 9 ? hours : "0" + hours;
+						minutes = minutes > 9 ? minutes : "0" + minutes;
+						seconds = seconds > 9 ? seconds : "0" + seconds;
+						let writeDate = date.getFullYear()+"."+(date.getMonth()+1)+"."
+						writeDate += date.getDate()+" "+hours+":"
+						writeDate += minutes+":"+seconds
 					
 						if(rep[i].layer==0){ //부모 댓글은 [댓글]버튼 추가
-							html +=	"<tr>"
-							html += "<td>"+rep[i].content+"</td>"
-							html +=	"<td>"+writeDate+"</td>"
-							html += "<td>"
-							html +=	"<input type='button' id='"+i+"' value='삭제' onclick='remove(this.id)'>"
-							html +=	"<input type='button' id='"+rep[i].id+"' value='댓글' onclick='slideClick(this.id)'>"
-							html +=	"</td>"
-							html += "</tr>"
+							html += "<div class= 'reply'>"
+							html +=		rep[i].content+"<br>"
+							html +=		"<font class= 'time'>"+writeDate+"</font><br>"
+							html +=		"<input type='button' id='"+i+"' value='삭제' onclick='remove(this.id)'>"
+							html +=		"<input type='button' id='"+rep[i].id+"' value='댓글' onclick='visible("+i+")'>"
+							html +=		"<hr>"
+							html += "</div>"
+							
+							html += "<div id='hidden"+i+"' class= 'reply' style='display:none'>"
+							html +=		"<form id='re"+i+"' name='reform'>"
+							html +=			"<input type='hidden' name='group_id' value='"+rep[i].id+"'>"
+							html +=			"<textarea class= 'writeBox' id='content' name='content'></textarea>"
+							html +=			"<button type='button' onclick='rerep("+i+")'>대댓글 달기</button>"
+							html +=			"<button type='button' onclick='invisible("+i+")'>취소</button>"
+							html +=		"</form>"
+							html += 	"<hr>"
+							html += "</div>"
 						}
 						if(rep[i].layer==1){
-							html +=	"<tr>"
-							html += "<td>└>"+rep[i].content+"</td>"
-							html +=	"<td>"+writeDate+"</td>"
-							html += "<td>"
-							html +=	"<input type='button' id='"+i+"' value='삭제' onclick='remove(this.id)'>"
-							html +=	"</td>"
-							html += "</tr>"
+							html += "<div class= 'reply' style= 'background-color: #D5D5D5'>"
+							html +=		"└>"+rep[i].content+"<br>"
+							html +=		"<font class= 'time'>"+writeDate+"</font><br>"
+							html +=		"<input type='button' id='"+i+"' value='삭제' onclick='remove(this.id)'>"
+							html +=		"<hr>"
+							html += "</div>"
 						}
 					}
 				}
-				$("#show").html(html)
+				$("#show1").html(html)
 			}, error : function(){
 				alert('데이터를 가져올 수 없습니다')
 			}
 		})
 	}
-
-	function slideClick(num){
-		$("#first").slideDown("slow");
-		$("#modal_wrap").show();
-		//console.log(num);
-		re_id = num.trim() * 1; //빈칸 제거 후 숫자 형변환(만약을 대비)
-		//console.log(re_id);
-		document.reform.group_id.value = re_id;
+	
+	function visible(i){
+		$("#hidden"+i).show();
 	}
 	
-	function slide_hide(){
-		$("#first").slideUp("fast");
-		$("#modal_wrap").hide();
+	function invisible(i){
+		$("#hidden"+i).hide();
 	}
 	
 	window.onload = function (){ //브라우저 시작과 동시에 댓글 보여주기
@@ -138,41 +147,53 @@
 </script>
 
 <style type="text/css">
-	#modal_wrap{
-		display: none; position: fixed; z-index: 9;
-		margin: 0 auto; top: 0; left: 0; right: 0;
-		width: 100%; height: 100%;
-		background-color: rgba(0,0,0,0.6);
+	#hidden{
+		display: none;
+		align-content: center;
 	}
-	#first{
-		display: none; position: fixed; z-index: 10; margin: 0 auto;
-		top: 30px; left: 0; right: 0; height: 450px; width: 300px;
-		background-color: rgba(212,224,250,0.9);
+	.time{
+		font-size: 13px;
+	}
+	.replyBG{
+		margin: auto;
+		width: 600px;
+		background-color: #EAEAEA;
+	}
+	.reply{
+		width: 580px;
+		padding: 10px 10px 0px 10px;
+		word-break: break-all;
+	}
+	.writeBox{
+		width: 570px;
+		height: 60px;
+		resize: none;
 	}
 </style>
 </head>
-<body>
-	<div style="margin: 0 auto; width: 250px; padding-top: 20px;">
-		<form id="frm">
-			<textarea rows="5" cols="30" id="content" name="content"></textarea>
-			<button type="button" onclick="rep()">댓글 달기</button>
-		</form>
-	</div>
 
-	
-	<div id="modal_wrap">
-		<div id="first">
-			<div style="width: 250px; margin: 0 auto; padding-top: 20px;">
-				<form id="re" name="reform">
-					<input type="hidden" name="group_id" value="">
-					<textarea rows="5" cols="30" id="content" name="content"></textarea>
-					<button type="button" onclick="rerep()">대댓글 달기</button>
-					<button type="button" onclick="slide_hide()">취소</button>
-				</form>
-			</div>
-		</div>
+<body>
+	<div style="margin: auto; width: 600px;">
+		<div style="padding: 10px 10px 10px 10px;">
+			<form id="frm">
+				<textarea class="writeBox" id="content" name="content"></textarea>
+				<div align="right">
+					<button type="button" onclick="rep()">댓글 달기</button>
+				</div>
+			</form>
+		</div>	
 	</div>
 	
-	<table border="1" id="show" style="margin: auto;"></table>
+	<div id="show1" class="replyBG"></div>
+	
+	<table border="1" id="show" style="margin: auto;"></table> <!-- 댓글 보여주는 부분 -->
 </body>
 </html>
+
+
+
+
+
+
+
+
